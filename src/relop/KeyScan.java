@@ -40,8 +40,10 @@ public class KeyScan extends Iterator {
 	 */
 	public void explain(int depth) {
 		// TODO: explain(depth)
+		this.indent(depth++); // TODO :check indent
+		System.out.println("KeyScan depth =" + depth);
 
-		throw new UnsupportedOperationException("Not implemented");
+		// throw new UnsupportedOperationException("Not implemented");
 	}
 
 	/**
@@ -75,7 +77,7 @@ public class KeyScan extends Iterator {
 	 * Closes the iterator, releasing any resources (i.e. pinned pages).
 	 */
 	public void close() {
-		// TODO: close
+		// TODO: Done
 		if (isOpen()) {
 			hashscan.close();
 		}
@@ -88,9 +90,9 @@ public class KeyScan extends Iterator {
 	 */
 	public boolean hasNext() {
 		// TODO: Done
-		if (hashscan.hasNext()) {
-			return true;
-		} else {
+		if (this.isOpen()) {
+			return hashscan.hasNext();
+		}else{
 			return false;
 		}
 		// throw new UnsupportedOperationException("Not implemented");
@@ -104,8 +106,13 @@ public class KeyScan extends Iterator {
 	 */
 	public Tuple getNext() {
 		// TODO: get next tuple
-		Tuple t = new Tuple(this.getSchema());
-		return t;
+//		if (this.hasNext()) {
+			Tuple t = new Tuple(this.getSchema());
+			return t;
+//		} 
+//		else {
+//			throw new IllegalStateException("KeyScan - tuples underflow");
+//		}
 
 		// throw new UnsupportedOperationException("Not implemented");
 	}
