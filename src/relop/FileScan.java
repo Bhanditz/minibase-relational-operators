@@ -13,6 +13,7 @@ public class FileScan extends Iterator {
 	// TODO: Done
 	private HeapFile file;
 	private HeapScan heapscan; // Wrapper for heap file scan
+	private RID lastRecordID;
 
 	/**
 	 * Constructs a file scan, given the schema and heap file.
@@ -25,6 +26,7 @@ public class FileScan extends Iterator {
 		this.file = file;
 
 		this.heapscan = file.openScan();
+		lastRecordID = new RID();
 
 		// throw new UnsupportedOperationException("Not implemented");
 	}
@@ -34,7 +36,9 @@ public class FileScan extends Iterator {
 	 * child iterators, and increases the indent depth along the way.
 	 */
 	public void explain(int depth) {
-		throw new UnsupportedOperationException("Not implemented");
+		this.indent(depth++);
+		System.out.println("FileScan depth => " + depth);
+		// throw new UnsupportedOperationException("Not implemented");
 	}
 
 	/**
@@ -43,7 +47,7 @@ public class FileScan extends Iterator {
 	public void restart() {
 		// TODO: Done
 		if (isOpen()) {
-			heapscan.close();
+			close();
 		}
 		this.heapscan = file.openScan();
 		// throw new UnsupportedOperationException("Not implemented");
@@ -79,8 +83,8 @@ public class FileScan extends Iterator {
 	 */
 	public boolean hasNext() {
 		// TODO: Done
-		if (heapscan.hasNext()) {
-			return true;
+		if (this.isOpen()) {
+			return heapscan.hasNext();
 		}
 		return false;
 
@@ -95,8 +99,12 @@ public class FileScan extends Iterator {
 	 */
 	public Tuple getNext() {
 		// TODO: get next tuple
-		Tuple t = new Tuple(this.getSchema());
-		return t;
+		if (this.hasNext()) {
+			Tuple t = new Tuple(this.getSchema());
+			return t;
+		} else {
+			throw new IllegalStateException("FilsScan - tuples underflow");
+		}
 
 		// throw new UnsupportedOperationException("Not implemented");
 	}
@@ -105,9 +113,10 @@ public class FileScan extends Iterator {
 	 * Gets the RID of the last tuple returned.
 	 */
 	public RID getLastRID() {
-		//TODO: get the RID ?
-		
-		throw new UnsupportedOperationException("Not implemented");
+		// TODO: get the RID ?
+		return lastRecordID;
+
+		// throw new UnsupportedOperationException("Not implemented");
 	}
 
 } // public class FileScan extends Iterator
