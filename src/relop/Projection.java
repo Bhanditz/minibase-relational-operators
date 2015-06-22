@@ -14,7 +14,13 @@ public class Projection extends Iterator {
 	public Projection(Iterator iter, Integer... fields) {
 		this.iter = iter;
 		this.fields = fields;
-		this.setSchema(this.iter.getSchema());
+
+		// new schema for projection
+		Schema new_schema = new Schema(fields.length);
+		for (int i = 0; i < fields.length; i++) {
+			new_schema.initField(i, iter.getSchema(), fields[i]);
+		}
+		setSchema(new_schema);
 
 		// throw new UnsupportedOperationException("Not implemented");
 	}
@@ -79,8 +85,16 @@ public class Projection extends Iterator {
 	 */
 	public Tuple getNext() {
 		// TODO: projection get next tuple
+		Tuple parent = iter.getNext();
+		Tuple t = new Tuple(this.getSchema());
+		for (int i = 0; i < fields.length; i++) {
+			t.setField(i, parent.getField(i));
+		}
+		return t;
 
-		throw new UnsupportedOperationException("Not implemented");
+		// throw new IllegalStateException("No more tuple!");
+
+		// throw new UnsupportedOperationException("Not implemented");
 	}
 
 } // public class Projection extends Iterator
