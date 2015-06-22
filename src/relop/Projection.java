@@ -24,35 +24,51 @@ public class Projection extends Iterator {
 	 * child iterators, and increases the indent depth along the way.
 	 */
 	public void explain(int depth) {
-		throw new UnsupportedOperationException("Not implemented");
+		// TODO: Done
+		this.indent(depth++);
+		System.out.println("Projection depth: " + depth);
+		// throw new UnsupportedOperationException("Not implemented");
 	}
 
 	/**
 	 * Restarts the iterator, i.e. as if it were just constructed.
 	 */
 	public void restart() {
-		throw new UnsupportedOperationException("Not implemented");
+		// TODO: Done
+		this.iter.restart();
+		// throw new UnsupportedOperationException("Not implemented");
 	}
 
 	/**
 	 * Returns true if the iterator is open; false otherwise.
 	 */
 	public boolean isOpen() {
-		throw new UnsupportedOperationException("Not implemented");
+		// TODO: Done
+		if (this.iter.isOpen())
+			return true;
+		return false;
+
+		// throw new UnsupportedOperationException("Not implemented");
 	}
 
 	/**
 	 * Closes the iterator, releasing any resources (i.e. pinned pages).
 	 */
 	public void close() {
-		throw new UnsupportedOperationException("Not implemented");
+		// TODO: Done
+		this.iter.close();
+		// throw new UnsupportedOperationException("Not implemented");
 	}
 
 	/**
 	 * Returns true if there are more tuples, false otherwise.
 	 */
 	public boolean hasNext() {
-		throw new UnsupportedOperationException("Not implemented");
+		// TODO: projection has next
+		if (this.iter.hasNext())
+			return true;
+		return false;
+		// throw new UnsupportedOperationException("Not implemented");
 	}
 
 	/**
@@ -62,6 +78,8 @@ public class Projection extends Iterator {
 	 *             if no more tuples
 	 */
 	public Tuple getNext() {
+		// TODO: projection get next tuple
+
 		throw new UnsupportedOperationException("Not implemented");
 	}
 
