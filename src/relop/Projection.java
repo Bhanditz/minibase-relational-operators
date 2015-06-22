@@ -18,7 +18,12 @@ public class Projection extends Iterator {
 		// new schema for projection
 		Schema new_schema = new Schema(fields.length);
 		for (int i = 0; i < fields.length; i++) {
-			new_schema.initField(i, iter.getSchema(), fields[i]);
+			// new_schema.initField(i, iter.getSchema(), fields[i]);
+			System.out.println("Field Type of i = " + i + " is "
+					+ iter.getSchema().fieldType(fields[i]));
+			new_schema.initField(i, iter.getSchema().fieldType(fields[i]), iter
+					.getSchema().fieldLength(fields[i]), iter.getSchema()
+					.fieldName(fields[i]));
 		}
 		setSchema(new_schema);
 
@@ -26,7 +31,7 @@ public class Projection extends Iterator {
 	}
 
 	/**
-	 * Gives a one-line explaination of the iterator, repeats the call on any
+	 * Gives a one-line explanation of the iterator, repeats the call on any
 	 * child iterators, and increases the indent depth along the way.
 	 */
 	public void explain(int depth) {
@@ -88,7 +93,7 @@ public class Projection extends Iterator {
 		Tuple parent = iter.getNext();
 		Tuple t = new Tuple(this.getSchema());
 		for (int i = 0; i < fields.length; i++) {
-			t.setField(i, parent.getField(i));
+			t.setField(i, parent.getField(fields[i]));
 		}
 		return t;
 
