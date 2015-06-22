@@ -6,39 +6,43 @@ package relop;
  * connected by AND operators.
  */
 public class Selection extends Iterator {
-	// TODO
+	// TODO:Done
 	private Iterator iter;
 	private Predicate[] preds;
+	private Tuple t;
+	private boolean found;
 
 	/**
 	 * Constructs a selection, given the underlying iterator and predicates.
 	 */
 	public Selection(Iterator iter, Predicate... preds) {
+		// TODO: Done
 		this.iter = iter;
 		this.preds = preds;
 		// Type mismatch: cannot convert from Predicate[] to Predicate
 
-		// TODO: check again
 		this.setSchema(this.iter.getSchema());
 		// throw new UnsupportedOperationException("Not implemented");
 	}
 
 	/**
-	 * Gives a one-line explaination of the iterator, repeats the call on any
+	 * Gives a one-line explanation of the iterator, repeats the call on any
 	 * child iterators, and increases the indent depth along the way.
 	 */
 	public void explain(int depth) {
-		throw new UnsupportedOperationException("Not implemented");
+		// TODO: check depth
+		this.indent(depth++);
+		System.out.println("Selection Depth: " + depth);
+		// throw new UnsupportedOperationException("Not implemented");
 	}
 
 	/**
 	 * Restarts the iterator, i.e. as if it were just constructed.
 	 */
 	public void restart() {
-		if (isOpen()) {
-			close();
-		}
-		throw new UnsupportedOperationException("Not implemented");
+		// TODO: Done
+		iter.restart();
+		// throw new UnsupportedOperationException("Not implemented");
 	}
 
 	/**
@@ -48,9 +52,9 @@ public class Selection extends Iterator {
 		// TODO: Done
 		if (iter.isOpen()) {
 			return true;
-		} else {
-			return false;
 		}
+		return false;
+
 		// throw new UnsupportedOperationException("Not implemented");
 	}
 
@@ -68,7 +72,26 @@ public class Selection extends Iterator {
 	 */
 	public boolean hasNext() {
 		// TODO:
-		throw new UnsupportedOperationException("Not implemented");
+		this.t = null;
+		while (iter.hasNext()) {
+			t = iter.getNext();
+			found = true;
+			for (int i = 0; i < preds.length; i++) {
+				if (!preds[i].evaluate(t)) {
+					found = false;
+					break;
+				}
+			}
+			if (found) {
+				break;
+			}
+			this.t = null;
+		}
+		if (t != null)
+			return true;
+
+		return false;
+		// throw new UnsupportedOperationException("Not implemented");
 	}
 
 	/**
@@ -78,7 +101,14 @@ public class Selection extends Iterator {
 	 *             if no more tuples
 	 */
 	public Tuple getNext() {
-		throw new UnsupportedOperationException("Not implemented");
+		Tuple next_tuple = this.t;
+		if (t != null) {
+			this.t = null;
+		}
+		return next_tuple;
+
+		// throw new IllegalStateException("No More Tuples!");
+		// throw new UnsupportedOperationException("Not implemented");
 	}
 
 } // public class Selection extends Iterator
