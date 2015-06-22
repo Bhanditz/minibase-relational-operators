@@ -100,7 +100,7 @@ public class FileScan extends Iterator {
 	public Tuple getNext() {
 		// TODO: get next tuple
 		if (this.hasNext()) {
-			Tuple t = new Tuple(this.getSchema());
+			Tuple t = new Tuple(this.getSchema(), heapscan.getNext(lastRecordID));
 			return t;
 		} else {
 			throw new IllegalStateException("FilsScan - tuples underflow");
@@ -113,7 +113,7 @@ public class FileScan extends Iterator {
 	 * Gets the RID of the last tuple returned.
 	 */
 	public RID getLastRID() {
-		// TODO: get the RID ?
+		// TODO: Done
 		return lastRecordID;
 
 		// throw new UnsupportedOperationException("Not implemented");
